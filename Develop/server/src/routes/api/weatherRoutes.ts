@@ -5,8 +5,8 @@ const router = Router();
 import HistoryService from '../../service/historyService.js';
 // import WeatherService from '../../service/weatherService.js';
 import WeatherService from '../../service/weatherService.js';
-// TODO: POST Request with city name to retrieve weather data
 
+// TODO: POST Request with city name to retrieve weather data
 router.post('/', async (req: Request, res: Response) => {
   // TODO: GET weather data from city name
   try {
@@ -18,16 +18,16 @@ router.post('/', async (req: Request, res: Response) => {
 
     // TODO: Save city to search history
     await HistoryService.addCityToHistory(city);
-    res.status(200).json({ city, weatherData });
+    return res.status(200).json({ city, weatherData });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: 'Failed to retrieve weather data.' });
+    return res.status(500).json({ message: 'Failed to retrieve weather data.' });
   }
 });
 
 
 // TODO: GET search history
-router.get('/history', async (req: Request, res: Response) => {
+router.get('/history', async (_req: Request, res: Response) => {
   try {
     // Fetch search history from HistoryService
     const history = await HistoryService.getSearchHistory();
@@ -61,7 +61,7 @@ router.delete('/history/:id', async (req: Request, res: Response) => {
     }
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: 'Failed to delete city from search history.' });
+    return res.status(500).json({ message: 'Failed to delete city from search history.' });
   }
 });
 
