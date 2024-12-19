@@ -18,10 +18,10 @@ router.post('/', async (req: Request, res: Response) => {
 
     // TODO: Save city to search history
     await HistoryService.addCityToHistory(city);
-    res.status(200).json({ city, weatherData });
+    return res.status(200).json({ city, weatherData });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: 'Failed to retrieve weather data.' });
+    return res.status(500).json({ message: 'Failed to retrieve weather data.' });
   }
 });
 
