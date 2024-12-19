@@ -1,54 +1,6 @@
-// import dotenv from 'dotenv';
-// dotenv.config();
-
-// TODO: Define an interface for the Coordinates object
-
-// TODO: Define a class for the Weather object
-
-// TODO: Complete the WeatherService class
-// class WeatherService {
-  // TODO: Define the baseURL, API key, and city name properties
-
-  // TODO: Create fetchLocationData method
-  // private async fetchLocationData(query: string) {}
-
-  // TODO: Create destructureLocationData method
-  // private destructureLocationData(locationData: Coordinates): Coordinates {}
-
-  // TODO: Create buildGeocodeQuery method
-  // private buildGeocodeQuery(): string {}
-
-  // TODO: Create buildWeatherQuery method
-  // private buildWeatherQuery(coordinates: Coordinates): string {}
-
-  // TODO: Create fetchAndDestructureLocationData method
-  // private async fetchAndDestructureLocationData() {}
-
-  // TODO: Create fetchWeatherData method
-  // private async fetchWeatherData(coordinates: Coordinates) {}
-
-  // TODO: Build parseCurrentWeather method
-  // private parseCurrentWeather(response: any) {}
-
-  // TODO: Complete buildForecastArray method
-  // private buildForecastArray(currentWeather: Weather, weatherData: any[]) {}
-
-  // TODO: Complete getWeatherForCity method
-  // async getWeatherForCity(city: string) {}
-  
-// }
-
-// export default new WeatherService();
-
-
-
-
-
-
 import dotenv from 'dotenv';
 dotenv.config();
 import fs from 'node:fs/promises';
-import https from 'node:https';
 
 // TODO: Define an interface for the Coordinates object
 interface Coordinates {
@@ -100,33 +52,10 @@ class WeatherService {
     return await fs.writeFile(this.dbPath, JSON.stringify(data, null, '\t'));
   }
 
-  // TODO: Create fetch method to make HTTP requests
-  private async fetch(url: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      https.get(url, (res) => {
-        let data = '';
-
-        res.on('data', (chunk) => {
-          data += chunk;
-        });
-
-        res.on('end', () => {
-          try {
-            resolve(JSON.parse(data));
-          } catch (err) {
-            reject(new Error('Failed to parse response data.'));
-          }
-        });
-      }).on('error', (err) => {
-        reject(err);
-      });
-    });
-  }
-
   // TODO: Create fetchLocationData method
   private async fetchLocationData(query: string): Promise<Coordinates> {
     const url = `${this.baseURL}/geo/1.0/direct?q=${encodeURIComponent(query)}&appid=${this.apiKey}&limit=1`;
-    const response = await this.fetch(url);
+    const response = await fetch(url).then(res => res.json());
 
     if (response.length === 0) {
       throw new Error(`Location not found for query: ${query}`);
@@ -144,7 +73,7 @@ class WeatherService {
   // TODO: Create fetchWeatherData method
   private async fetchWeatherData(coordinates: Coordinates): Promise<any> {
     const url = this.buildWeatherQuery(coordinates);
-    return await this.fetch(url);
+    return await fetch(url).then(res => res.json());
   }
 
   // TODO: Build parseCurrentWeather method
@@ -184,7 +113,7 @@ class WeatherService {
     await this.write(updatedWeather);
   }
 
-  // TODO: Create removeWeather method
+  // TODO: Create removeWeather method  
   async removeWeather(city: string): Promise<void> {
     const savedWeather = await this.getSavedWeather();
     const updatedWeather = savedWeather.filter((entry: any) => entry.city !== city);
@@ -193,3 +122,5 @@ class WeatherService {
 }
 
 export default new WeatherService();
+
+
