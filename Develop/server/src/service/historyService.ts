@@ -1,7 +1,7 @@
 // TODO: Define a City class with name and id properties
 
 // TODO: Complete the HistoryService class
-class HistoryService {
+// class HistoryService {
   // TODO: Define a read method that reads from the searchHistory.json file
   // private async read() {}
 
@@ -17,9 +17,10 @@ class HistoryService {
   // * BONUS TODO: Define a removeCity method that removes a city from the searchHistory.json file
   // async removeCity(id: string) {}
   
-}
+// }
 
-export default new HistoryService();
+// export default new HistoryService();
+
 
 
 
@@ -68,34 +69,41 @@ class HistoryService {
     });
   }
 
-  // TODO Define an addCity method that adds a city to the searchHistory.json file
-  async addCity(city: string): Promise<City> {
+  // TODO: Define an addCityToHistory method that adds a city to the searchHistory.json file
+  async addCityToHistory(city: string): Promise<void> {
     if (!city) {
       throw new Error('City name cannot be empty.');
     }
 
-    const newCity = new City(city, uuidv4());
     const cities = await this.getCities();
 
     // Avoid duplicates
-    if (cities.some((c) => c.name === city)) {
-      return newCity;
+    if (cities.some((c) => c.name.toLowerCase() === city.toLowerCase())) {
+      return;
     }
 
+    const newCity = new City(city, uuidv4());
     const updatedCities = [...cities, newCity];
     await this.write(updatedCities);
+  }
 
-    return newCity;
+  // TODO: Define a getSearchHistory method to fetch the search history
+  async getSearchHistory(): Promise<City[]> {
+    return await this.getCities();
   }
 
   // * BONUS TODO: Define a removeCity method that removes a city from the searchHistory.json file
-  async removeCity(id: string): Promise<void> {
+  async removeCity(id: string): Promise<boolean> {
     const cities = await this.getCities();
     const updatedCities = cities.filter((city) => city.id !== id);
 
+    if (cities.length === updatedCities.length) {
+      return false; // No city was removed
+    }
+
     await this.write(updatedCities);
+    return true;
   }
 }
 
 export default new HistoryService();
-

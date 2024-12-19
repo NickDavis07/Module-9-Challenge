@@ -1,12 +1,12 @@
-import dotenv from 'dotenv';
-dotenv.config();
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 // TODO: Define an interface for the Coordinates object
 
 // TODO: Define a class for the Weather object
 
 // TODO: Complete the WeatherService class
-class WeatherService {
+// class WeatherService {
   // TODO: Define the baseURL, API key, and city name properties
 
   // TODO: Create fetchLocationData method
@@ -36,9 +36,9 @@ class WeatherService {
   // TODO: Complete getWeatherForCity method
   // async getWeatherForCity(city: string) {}
   
-}
+// }
 
-export default new WeatherService();
+// export default new WeatherService();
 
 
 
