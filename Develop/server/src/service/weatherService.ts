@@ -111,15 +111,44 @@ class WeatherService {
   }
 
   // TODO: Complete buildForecastArray method
+  // private buildForecastArray(currentWeather: Weather, forecastData: any[]): Weather[] {
+  //   return forecastData.map((day: any) => {
+  //     const date = new Date(day.dt * 1000).toLocaleDateString(); // Convert UNIX timestamp to date
+  //     return new Weather(
+  //       currentWeather.city,
+  //       date,
+  //       day.weather[0].icon,
+  //       day.weather[0].description,
+  //       (day.main.temp * 9) / 5 + 32, // Convert Celsius to Fahrenheit and assign to tempF
+  //       day.wind.speed,
+  //       day.main.humidity
+  //     );
+  //   });
+  // }
+
   private buildForecastArray(currentWeather: Weather, forecastData: any[]): Weather[] {
-    return forecastData.map((day: any) => {
+    const uniqueDates = new Set<string>(); // Track dates to ensure uniqueness
+    const today = new Date().toLocaleDateString(); // Get today's date
+  
+    const filteredForecast = forecastData.filter((day: any) => {
       const date = new Date(day.dt * 1000).toLocaleDateString(); // Convert UNIX timestamp to date
+      if (uniqueDates.has(date) || date === today) {
+        return false; // Skip if the date has already been added or is today
+      }
+      uniqueDates.add(date);
+      return true;
+    });
+  
+    // Limit to 5 days
+    return filteredForecast.slice(0, 5).map((day: any) => {
+      const date = new Date(day.dt * 1000).toLocaleDateString(); // Convert UNIX timestamp to date
+      const temperatureF = ((day.main.temp * 9) / 5 + 32).toFixed(2); // Convert Celsius to Fahrenheit and limit decimals
       return new Weather(
         currentWeather.city,
         date,
         day.weather[0].icon,
         day.weather[0].description,
-        (day.main.temp * 9) / 5 + 32, // Convert Celsius to Fahrenheit and assign to tempF
+        parseFloat(temperatureF), // Ensure the temperature is a number
         day.wind.speed,
         day.main.humidity
       );
