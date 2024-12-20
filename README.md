@@ -27,33 +27,26 @@ A simple weather dashboard application that allows users to search for weather c
 ### Installation
 
 1. Clone the repository:
-   ```bash
    git clone https://github.com/your-username/weather-dashboard.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd weather-dashboard
-   ```
-3. Install dependencies:
-   ```bash
-  npm install
-   ```
 
-4. Create a `.env` file in the `dev` folder with the following content:
-   ```env
+2. Navigate to the project directory:
+   cd weather-dashboard
+   
+4. Install dependencies:
+  npm install
+
+5. Create a `.env` file in the `dev` folder with the following content:
    API_BASE_URL=https://api.openweathermap.org
    API_KEY=your_openweathermap_api_key
-   ```
 
-5. Start the application:
-   ```bash
+
+6. Start the application:
    npm start
-   ```
 
-6. Open your browser and go to:
-   ```
+
+7. Open your browser and go to:
    http://localhost:3000
-   ```
+
 
 ## API Endpoints
 
