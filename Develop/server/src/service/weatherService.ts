@@ -13,7 +13,7 @@ class Weather {
   date: string;
   icon: string;
   iconDescription: string;
-  temperature: number;
+  tempF: number;
   windSpeed: number;
   humidity: number;
 
@@ -22,7 +22,7 @@ class Weather {
     date: string,
     icon: string,
     iconDescription: string,
-    temperature: number,
+    tempF: number,
     windSpeed: number,
     humidity: number
   ) {
@@ -30,7 +30,7 @@ class Weather {
     this.date = date;
     this.icon = icon;
     this.iconDescription = iconDescription;
-    this.temperature = temperature;
+    this.tempF = tempF;
     this.windSpeed = windSpeed;
     this.humidity = humidity;
   }
@@ -104,7 +104,7 @@ class WeatherService {
       new Date().toLocaleDateString(),
       response.weather[0].icon,
       response.weather[0].description,
-      (response.main.temp * 9) / 5 + 32, // Convert Celsius to Fahrenheit
+      (response.main.temp * 9) / 5 + 32, // Convert Celsius to Fahrenheit and assign to tempF
       response.wind.speed,
       response.main.humidity
     );
@@ -119,7 +119,7 @@ class WeatherService {
         date,
         day.weather[0].icon,
         day.weather[0].description,
-        (day.main.temp * 9) / 5 + 32, // Convert Celsius to Fahrenheit
+        (day.main.temp * 9) / 5 + 32, // Convert Celsius to Fahrenheit and assign to tempF
         day.wind.speed,
         day.main.humidity
       );

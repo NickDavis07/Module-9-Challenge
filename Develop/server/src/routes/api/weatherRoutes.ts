@@ -7,7 +7,8 @@ import WeatherService from '../../service/weatherService.js';
 // TODO: POST Request with city name to retrieve weather data
 router.post('/', async (req: Request, res: Response) => {
   console.log('Request Body:', req.body);
-// TODO: GET weather data from city name
+
+  // TODO: GET weather data from city name
   try {
     const { city } = req.body;
     if (!city) {
@@ -15,21 +16,29 @@ router.post('/', async (req: Request, res: Response) => {
     }
 
     console.log(`Fetching weather data for city: ${city}`);
+
     // Fetch current weather and forecast
     const { currentWeather, forecast } = await WeatherService.getWeatherForCity(city);
 
+    if (!currentWeather) {
+      console.error('Error: currentWeather is undefined');
+      return res.status(500).json({ message: 'Failed to fetch current weather data.' });
+    }
+
     console.log('Weather Data:', { currentWeather, forecast });
 
-   // TODO: save city to search history
+    // TODO: Save city to search history
     await HistoryService.addCityToHistory(city);
 
-    // Respond with current weather and forecast
-    return res.status(200).json({ city, currentWeather, forecast });
+    // Respond as an array: [currentWeather, ...forecast]
+    return res.status(200).json([currentWeather, ...forecast]);
   } catch (err) {
     console.error('Error in /api/weather:', err);
     return res.status(500).json({ message: 'Failed to retrieve weather data.' });
   }
 });
+
+
 
 // TODO: GET search history
 router.get('/history', async (_req: Request, res: Response) => {
