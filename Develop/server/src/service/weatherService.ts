@@ -30,12 +30,12 @@ class WeatherService {
   private dbPath: string;
 
   constructor() {
-    this.baseURL = 'https://api.openweathermap.org/data/2.5';
-    this.apiKey = process.env.OPENWEATHER_API_KEY || '';
+    this.baseURL = process.env.API_BASE_URL || '';
+    this.apiKey = process.env.API_KEY || '';
     this.dbPath = 'db/weather.json';
 
     if (!this.apiKey) {
-      throw new Error('API key for OpenWeatherMap is missing. Please set it in the environment variables.');
+      throw new Error('API key is missing. Set it in the environment variables.');
     }
   }
 
@@ -66,15 +66,38 @@ class WeatherService {
   }
 
   // TODO: Create buildWeatherQuery method
+  // private buildWeatherQuery(coordinates: Coordinates): string {
+  //   return `${this.baseURL}/weather?lat=${coordinates.lat}&lon=${coordinates.lon}&units=metric&appid=${this.apiKey}`;
+  // }
+
   private buildWeatherQuery(coordinates: Coordinates): string {
-    return `${this.baseURL}/weather?lat=${coordinates.lat}&lon=${coordinates.lon}&units=metric&appid=${this.apiKey}`;
+    return `${this.baseURL}/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lon}&units=metric&appid=${this.apiKey}`;
   }
 
   // TODO: Create fetchWeatherData method
-  private async fetchWeatherData(coordinates: Coordinates): Promise<any> {
+  // private async fetchWeatherData(coordinates: Coordinates): Promise<any> {
+  //   const url = this.buildWeatherQuery(coordinates);
+  //   console.log('API Request URL:', url);
+  //   return await fetch(url).then(res => res.json());
+  // }
+
+  async fetchWeatherData(coordinates: Coordinates): Promise<any> {
     const url = this.buildWeatherQuery(coordinates);
-    return await fetch(url).then(res => res.json());
+    console.log('API Request URL:', url);
+  
+    const response = await fetch(url);
+    const text = await response.text(); // Read raw response as text
+    console.log('Raw API Response:', text);
+  
+    // Try to parse JSON safely
+    try {
+      return JSON.parse(text);
+    } catch (err) {
+      console.error('Failed to parse API response as JSON:', err);
+      throw new Error('Invalid API response');
+    }
   }
+  
 
   // TODO: Build parseCurrentWeather method
   private parseCurrentWeather(response: any): Weather {
@@ -87,11 +110,27 @@ class WeatherService {
   }
 
   // TODO: Complete getWeatherForCity method
-  async getWeatherForCity(city: string): Promise<Weather> {
+  // async getWeatherForCity(city: string): Promise<Weather> {
+  //   const coordinates = await this.fetchLocationData(city);
+  //   const weatherData = await this.fetchWeatherData(coordinates);
+  //   return this.parseCurrentWeather(weatherData);
+  // }
+
+  async getWeatherForCity(city: string): Promise<any> {
     const coordinates = await this.fetchLocationData(city);
     const weatherData = await this.fetchWeatherData(coordinates);
-    return this.parseCurrentWeather(weatherData);
-  }
+  
+    return {
+      city: weatherData.name, // City name
+      date: new Date().toLocaleDateString(), // Current date
+      icon: weatherData.weather[0].icon, // Weather icon code
+      iconDescription: weatherData.weather[0].description, // Icon description
+      tempF: (weatherData.main.temp * 9) / 5 + 32, // Convert temp to Fahrenheit
+      windSpeed: weatherData.wind.speed, // Wind speed
+      humidity: weatherData.main.humidity // Humidity
+    };
+  }  
+
 
   // TODO: Create getSavedWeather method
   async getSavedWeather(): Promise<any[]> {

@@ -5,11 +5,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const router = Router();
 
-// TODO: Define route to serve index.html - Copied from htmlRoutes.ts in Mini Project
+// TODO: Define route to serve index.html
 router.get('/', (_req: Request, res: Response) => {
   try {
     const filePath = path.join(__dirname, '../../../client/dist/index.html');
-    res.sendFile(filePath); // Serve the HTML file
+    res.sendFile(filePath);
   } catch (err) {
     console.error('Error serving index.html:', err);
     res.status(500).send('Failed to serve the requested file.');
