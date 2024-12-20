@@ -60,7 +60,9 @@ class HistoryService {
 
   // TODO: Define a getSearchHistory method to fetch the search history
   async getSearchHistory(): Promise<City[]> {
-    return await this.getCities();
+    const cities = await this.getCities();
+    console.log('Fetched Search History:', cities); // Debug log
+    return cities; // Return as an array (no wrapping object)
   }
 
   // * BONUS TODO: Define a removeCity method that removes a city from the searchHistory.json file

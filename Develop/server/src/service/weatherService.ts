@@ -111,21 +111,6 @@ class WeatherService {
   }
 
   // TODO: Complete buildForecastArray method
-  // private buildForecastArray(currentWeather: Weather, forecastData: any[]): Weather[] {
-  //   return forecastData.map((day: any) => {
-  //     const date = new Date(day.dt * 1000).toLocaleDateString(); // Convert UNIX timestamp to date
-  //     return new Weather(
-  //       currentWeather.city,
-  //       date,
-  //       day.weather[0].icon,
-  //       day.weather[0].description,
-  //       (day.main.temp * 9) / 5 + 32, // Convert Celsius to Fahrenheit and assign to tempF
-  //       day.wind.speed,
-  //       day.main.humidity
-  //     );
-  //   });
-  // }
-
   private buildForecastArray(currentWeather: Weather, forecastData: any[]): Weather[] {
     const uniqueDates = new Set<string>(); // Track dates to ensure uniqueness
     const today = new Date().toLocaleDateString(); // Get today's date

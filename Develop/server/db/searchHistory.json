@@ -1,9 +1,5 @@
 [
 	{
-		"name": "San Diego",
-		"id": "c06b85f0-fa9e-453e-9782-2c59ae48f8d6"
-	},
-	{
 		"name": "Ogden",
 		"id": "fb78a26a-9628-4364-b686-7d66cbd82d39"
 	},
@@ -22,5 +18,9 @@
 	{
 		"name": "alaska",
 		"id": "c2952980-1d87-45c8-9e48-0e3747ec0e9a"
+	},
+	{
+		"name": "Springville",
+		"id": "efb7dd25-07fd-4889-9efd-7b3264abb280"
 	}
 ]
