@@ -38,16 +38,14 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-
-
 // TODO: GET search history
 router.get('/history', async (_req: Request, res: Response) => {
   try {
     // Fetch search history from HistoryService
     const history = await HistoryService.getSearchHistory();
 
-    // Respond with search history
-    res.status(200).json({ history });
+    // Return history as an array (not wrapped in an object)
+    res.status(200).json(history);
   } catch (err) {
     console.error('Error fetching search history:', err);
     res.status(500).json({ message: 'Failed to retrieve search history.' });
